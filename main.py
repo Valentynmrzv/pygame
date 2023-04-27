@@ -1,5 +1,5 @@
 
-
+import os
 import random
 import pygame
 from pygame.constants import QUIT, K_DOWN, K_UP, K_LEFT, K_RIGHT
@@ -24,6 +24,9 @@ bg = pygame.transform.scale(pygame.image.load(
 bg_X1 = 0
 bg_X2 = bg.get_width()
 bg_move = 3
+
+IMAGE_PATH = "goose"
+PLAYER_IMEGES = os.listdir(IMAGE_PATH)
 
 
 player_size = (20, 20)
@@ -60,11 +63,14 @@ CREATE_BONUS = pygame.USEREVENT + 2
 CREATE_ENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(CREATE_ENEMY, 1500)
 pygame.time.set_timer(CREATE_BONUS, 5000)
+CHENGE_IMAGE = pygame.USEREVENT + 3
+pygame.time.set_timer(CHENGE_IMAGE, 200)
 
 enemies = []
 bonuses = []
 score = 0
 
+image_index = 0
 
 playing = True
 
@@ -77,7 +83,12 @@ while playing:
             enemies.append(create_enemy())
         if event.type == CREATE_BONUS:
             bonuses.append(create_bonus())
-
+        if event.type == CHENGE_IMAGE:
+            player = pygame.image.load(os.path.join(
+                IMAGE_PATH, PLAYER_IMEGES[image_index]))
+            image_index += 1
+            if image_index >= len(PLAYER_IMEGES):
+                image_index = 0
     # main_display.fill(COLOR_BLACK)
 
     bg_X1 -= bg_move
